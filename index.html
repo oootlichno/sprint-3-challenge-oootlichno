@@ -204,8 +204,10 @@
         }
       }
 
+
       // 👉 CHALLENGE 4 AntFarm
       // 🧠 Constructor takes **any** number of arguments, which are strings: the names of your ants
+
       // 🧠 Instances of AntFarm have an `ants` property holding an array of ants:
       //      * Each ant is an object with a `name` prop and a `health` prop that starts at 100
       // 🧠 Instances of AntFarm have a `work` method:
@@ -236,41 +238,44 @@
       // 👉 HINT: if you are not feeling confident with map and filter, solve the problem with for loops,
       //      and with the piece of mind of all tests passing, refactor to use map/filter
 
+
+
+  
+
+
       class AntFarm {
-        constructor(...antNames) {
-          this.ants = antNames.map((name) => ({ name, health: 100 }));
-        }
+  constructor(...antNames) {
+    this.ants = antNames.map(name => ({ name, health: 100 }));
+  }
 
-        work() {
-          this.ants.forEach((ant) => {
-            ant.health -= 20;
-          });
-
-          this.ants = this.ants.filter((ant) => ant.health > 0);
-
-          if (this.ants.length === 0) {
-            return "No ants here. Did you work them to death?";
-          } else {
-            return `${this.ants.length} ants starting work!`;
-          }
-        }
-
-        feed(name) {
-          let ant;
-          for (let i = 0; i < this.ants.length; i++) {
-            if (this.ants[i].name === name) {
-              ant = this.ants[i];
-            }
-          }
-
-          if (!ant) {
-            return `${name} not found!`;
-          }
-
-          ant.health += 15;
-          return "Yum!";
+  work() {
+    let activeAntsCount = 0;
+    for (let i = 0; i < this.ants.length; i++) {
+      if (this.ants[i].health > 0) {
+        activeAntsCount++;
+        this.ants[i].health -= 20;
+        if (this.ants[i].health <= 0) {
+          this.ants.splice(i, 1);
+          i--;
         }
       }
+    }
+    return activeAntsCount === 0 ? "No ants here. Did you work them to death?" : `${activeAntsCount} ants starting work!`;
+  }
+
+  feed(antName) {
+    let antFound = false;
+    for (let i = 0; i < this.ants.length; i++) {
+      if (this.ants[i].name === antName) {
+        antFound = true;
+        this.ants[i].health += 15;
+      }
+    }
+    return antFound ? "Yum!" : `${antName} not found!`;
+  }
+}
+
+ 
 
       // 🧪 TESTS, do not make any changes below this line ===================
       // 🧪 TESTS, do not make any changes below this line ===================
